@@ -16,13 +16,18 @@ connectDB();
 
 const app = express();
 
-app.use(cors());
-app.use(express.json());
+/* Middleware */
+app.use(
+  cors({
+    origin: [
+      "http://localhost:5173",
+      "https://keshav-hue-frontend-dcy9.vercel.app",
+    ],
+    credentials: true,
+  })
+);
 
-/* Test Route */
-app.get("/", (req, res) => {
-  res.send("✅ API is running...");
-});
+app.use(express.json());
 
 /* Routes */
 app.use("/api/users", userRoutes);
@@ -31,9 +36,7 @@ app.use("/api/chat", chatRoutes);
 app.use("/api/contact", contactRoutes);
 app.use("/api/admin", adminRoutes);
 
-/* ENV PORT */
-const PORT = process.env.PORT || 8080;
-
-app.listen(PORT, () =>
-  console.log(`✅ Server running on http://localhost:${PORT}`)
-);
+/* Test */
+app.get("/", (req, res) => {
+  res.send("✅ API is running...");
+});
